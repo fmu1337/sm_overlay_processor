@@ -1,0 +1,62 @@
+# vim: set ts=8 sts=2 sw=2 tw=99 et ft=python:
+import os
+
+builder.SetBuildFolder('package')
+
+folder_list = [
+  'addons/sourcemod/extensions',
+  'addons/sourcemod/scripting',
+  'addons/sourcemod/scripting/include',
+  'addons/sourcemod/scripting/examples',
+  'addons/sourcemod/gamedata',
+]
+
+if 'x86_64' in Extension.target_archs:
+  folder_list.extend([
+    'addons/sourcemod/extensions/x64',
+  ])
+
+folder_map = {}
+for folder in folder_list:
+  norm_folder = os.path.normpath(folder)
+  folder_map[folder] = builder.AddFolder(norm_folder)
+
+def CopyFiles(src, dest, files):
+  if not dest:
+    dest = src
+  dest_entry = folder_map[dest]
+  for source_file in files:
+    if os.path.isabs(src):
+      source_path = os.path.join(src, source_file)
+    else:
+      source_path = os.path.join(builder.sourcePath, src, source_file)
+    builder.AddCopy(source_path, dest_entry)
+
+# Repo packaging: parent addons/ tree is next to extension/
+repo_root = os.path.dirname(builder.sourcePath)
+
+CopyFiles(os.path.join(repo_root, 'addons/sourcemod/scripting/include'),
+          'addons/sourcemod/scripting/include',
+          ['overlay_processor.inc'])
+
+CopyFiles(os.path.join(repo_root, 'addons/sourcemod/scripting'),
+          'addons/sourcemod/scripting',
+          ['overlay_processor.sp'])
+
+CopyFiles(os.path.join(repo_root, 'addons/sourcemod/scripting/examples'),
+          'addons/sourcemod/scripting/examples',
+          ['overlay_demo.sp'])
+
+CopyFiles(os.path.join(repo_root, 'addons/sourcemod/gamedata'),
+          'addons/sourcemod/gamedata',
+          ['overlay_processor.games.txt'])
+
+CopyFiles(os.path.join(repo_root, 'addons/sourcemod/extensions'),
+          'addons/sourcemod/extensions',
+          ['overlay_processor.autoload'])
+
+for cxx_task in Extension.extensions:
+  if cxx_task.target.arch == 'x86_64':
+    builder.AddCopy(cxx_task.binary, folder_map['addons/sourcemod/extensions/x64'])
+  else:
+    builder.AddCopy(cxx_task.binary, folder_map['addons/sourcemod/extensions'])

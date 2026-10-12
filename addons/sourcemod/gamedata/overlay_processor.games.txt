@@ -1,0 +1,60 @@
+"Games"
+{
+	"#default"
+	{
+		"Keys"
+		{
+			// Informational: intercept uses SourceHook on IVEngineServer::ClientCommand (vafmt).
+			"ClientCommandHook"	"IVEngineServer::ClientCommand"
+			"ClientCommandStyle"	"SourceHook_vafmt"
+		}
+	}
+
+	"cstrike"
+	{
+		"Keys"
+		{
+			"EngineFamily"	"css"
+		}
+	}
+
+	"csgo"
+	{
+		"Keys"
+		{
+			"EngineFamily"	"csgo"
+		}
+	}
+
+	"tf"
+	{
+		"Keys"
+		{
+			"EngineFamily"	"tf2"
+		}
+	}
+
+	"left4dead2"
+	{
+		"Keys"
+		{
+			"EngineFamily"	"l4d2"
+		}
+	}
+
+	"dod"
+	{
+		"Keys"
+		{
+			"EngineFamily"	"dods"
+		}
+	}
+
+	"hl2mp"
+	{
+		"Keys"
+		{
+			"EngineFamily"	"hl2dm"
+		}
+	}
+}

@@ -1,0 +1,15 @@
+extension/build/
+extension/obj-*/
+*.smx
+*.o
+*.so
+*.dll
+*.dylib
+*.pdb
+*.exp
+*.lib
+.DS_Store
+__pycache__/
+*.pyc
+.vscode/
+.idea/
